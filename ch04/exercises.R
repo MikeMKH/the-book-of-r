@@ -54,3 +54,21 @@ qux[qux < 3 | qux >= 7] <- 100
 
 foo[c(FALSE, TRUE)]
 # foo[c(0, 1)] # no
+
+# 4.4
+paste("The quick brown fox\n  jump over\n    the lazy dogs")
+
+num1 <- 4
+num2 <- 0.75
+paste("The result of multiplying", num1, "by", num2, "is", num1 * num2)
+
+sub(pattern = "tdavies", replacement = "mharris",
+    x = "/Users/tdavies/Documents/RBook/")
+
+bar <- "How much wood could a woodchuck chuck"
+bar <- paste(bar, "if a woodchuck could chuck wood")
+gsub(pattern = "wood", replacement = "metal", x = bar)
+
+e <- "Two 6-packs for $12.99"
+"6-pack" == substr(x = e, start = 5, stop = 10)
+e <- sub(pattern = "12\\.99", replacement = "10.99", x = e)
