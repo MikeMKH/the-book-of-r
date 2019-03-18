@@ -72,3 +72,31 @@ gsub(pattern = "wood", replacement = "metal", x = bar)
 e <- "Two 6-packs for $12.99"
 "6-pack" == substr(x = e, start = 5, stop = 10)
 e <- sub(pattern = "12\\.99", replacement = "10.99", x = e)
+
+# 4.5
+sex <- c("F", "M", "M", "M", "F",
+         "F", "F", "M", "M", "M",
+         "M", "F", "M", "F", "F",
+         "F", "M", "M", "M", "M")
+party <- c("L", "N", "N", "L", "N",
+           "G", "N", "N", "G", "O",
+           "G", "L", "N", "N", "L",
+           "L", "N", "N", "L", "G")
+sex.fac <- factor(x = sex, levels = c("M", "F"), ordered = FALSE)
+party.fac <- factor(x = party, levels = c("G", "N", "L", "M", "O"), ordered = FALSE)
+
+party.fac[sex.fac == "M"]
+sex.fac[party.fac == "N"]
+
+sex.newvals <- factor(x = c("M", "M", "F", "F", "F", "M"))
+sex.fac <- factor(x = levels(sex.fac)[c(sex.fac, sex.newvals)])
+
+party.newvals <- factor(x = c("N","M","M","L","G","L"),levels=levels(party.fac))
+party.fac <- factor(x = levels(party.fac)[c(party.fac,party.newvals)])
+
+conf <- c(93,55,29,100,52,84,56,0,33,52,35,53,55,46,40,40,56,45,64,31,10,29,40,95,18,61)
+conf.fac <- cut(x = conf, breaks = c(0,30,70,100),
+                include.lowest=TRUE, labels = c("Low","Moderate","High"))
+
+conf.fac[party.fac=="L"]
+conf.fac[party.fac=="N"]
