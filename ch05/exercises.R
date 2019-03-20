@@ -27,3 +27,20 @@ b$flags <- rep(b$oldlist[[2]][,3], times = 2)
 b$nums[!b$flags]
 b$oldlist[[3]] <- "Don Quixote" # deep copy, thus a is untouched
 a[[3]]
+
+# 5.2
+dframe = data.frame(
+  person = c("Stan", "Franchine", "Steve", "Roger", "Hayley", "Klaus"),
+  sex = factor(c("M", "F", "M", "M", "F", "M")),
+  funny = factor(c("High", "Med", "Low", "High", "Med", "Med")),
+  stringsAsFactors = FALSE
+)
+
+dframe$age <- c(41, 41, 15, 21, 60, 16000)
+dframe <- dframe[c(1, 4, 2, 3)]
+# skip d - e
+dframe[
+  dframe$sex == "F"
+  & (dframe$funny == "Med" | dframe$funny == "High")
+  , c(1, 2)]
+dframe[substr(x = dframe$person, start = 1, stop = 1) == "S",]
