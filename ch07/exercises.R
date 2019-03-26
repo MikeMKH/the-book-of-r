@@ -32,3 +32,16 @@ points(b$weight[b$sex == "female"], b$height[b$sex == "female"],
 legend("topleft", legend=c("male","female"),
        pch=c(4, 2), col=c("blue", "pink")
 )
+
+# 7.2
+library("ggplot2")
+qplot(b$weight, b$height,
+      xlab = "Weight (kg)", ylab = "Height (cm)",
+      main = "Height against weight for 10 people",
+      color = b$sex, shape = b$sex
+)
+
+ggplot(data = b, mapping = aes(weight, height, color = sex)) +
+  geom_point(size = 4) +
+  scale_color_manual(breaks = c("male", "female"),
+                     values = c("blue", "pink"))
