@@ -9,7 +9,7 @@ if(!is.na(vec2[3])){ cat("Print me!") }             # Print me!
 
 ifelse(vec1 + vec2 > 3, vec1 * vec2, vec1 + vec2)
 
-if(any(toupper(substr(diag(mymat), 1, 1)) == "G")) {
+if (any(toupper(substr(diag(mymat), 1, 1)) == "G")) {
   i <- which(toupper(substr(diag(mymat), 1, 1)) == "G")
   diag(mymat)[i] <- "HERE"
 } else {
@@ -20,3 +20,64 @@ mymat
 mymat <- matrix(as.character(1:16),4,4)
 mymat <- matrix(c("DANDELION","Hyacinthus","Gerbera","MARIGOLD","geranium","ligularia","Pachysandra","SNAPDRAGON","GLADIOLUS"),3,3)
 mymat <- matrix(c("GREAT","exercises","right","here"),2,2,byrow=T)
+
+# 10.2
+switch(mynum,12,34,56,78,NA)
+
+if (mynum == 1) {
+  12
+} else if (mynum == 2) {
+  34
+} else if (mynum == 3) {
+  56
+} else if (mynum == 4) {
+  78
+} else {
+  NA
+}
+
+mynum <- 3 # 56
+
+if (any(doselevel == "High")) {
+  lowdose <- ifelse(lowdose >= 10, 10, lowdose / 2)
+  meddose <- ifelse(meddose >= 26, 26, meddose)
+  highdose <- ifelse(highdose < 60, 60, highdose * 1.5)
+  
+  dosage <- rep(x = lowdose, length.out = length(doselevel))
+  dosage[which(doselevel == "Med")] <- meddose
+  dosage[which(doselevel == "High")] <- highdose
+} else {
+  doselevel <- factor(doselevel,
+                      levels = c("Low","Med"),
+                      labels = c("Small","Large"))
+  
+  if (lowdose < 15 && meddose < 35) {
+    lowdose <- lowdose * 2
+    meddose <- meddose + highdose
+  }
+  
+  dosage <- rep(x = lowdose, length.out = length(doselevel))
+  dosage[doselevel == "Large"] <- meddose
+}
+
+lowdose <- 12.5
+meddose <- 25.3
+highdose <- 58.1
+doselevel <- factor(c("Low","High","High","High","Low","Med","Med"),levels=c("Low","Med","High"))
+
+lowdose <- 12.5
+meddose <- 25.3
+highdose <- 58.1
+doselevel <- factor(c("Low","Low","Low","Med","Low","Med","Med"),levels=c("Low","Med","High"))
+
+lowdose <- 9
+meddose <- 49
+highdose <- 61
+doselevel <- factor(c("Low","Med","Med"),levels=c("Low","Med","High"))
+
+lowdose <- 9
+meddose <- 49
+highdose <- 61
+doselevel <- factor(c("Low","High","High","High","Low","Med","Med"),levels=c("Low","Med","High"))
+
+# skipped c
