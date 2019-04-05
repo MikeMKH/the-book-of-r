@@ -81,3 +81,46 @@ highdose <- 61
 doselevel <- factor(c("Low","High","High","High","Low","Med","Med"),levels=c("Low","Med","High"))
 
 # skipped c
+
+# 10.3
+# skipped a
+
+mystrings <- c("Peter","Homer","Lois","Stewie","Maggie","Bart")
+mynums <- rep(NA, length(mystrings))
+for(i in 1:length(mystrings)) {
+  mynums[i] <- switch(EXPR=mystrings[i], Homer=12, Marge=34, Bart=56, Lisa=78, Maggie=90, NA)
+}
+
+count <- 0
+for(i in mylist) {
+  if (is.matrix(i)) {
+    count <- count + 1
+  } else if(is.list(i)) {
+    for(j in i) {
+      count <- ifelse(is.matrix(j), count + 1, count)
+    }
+  }
+}
+
+mylist <- list(aa=c(3.4,1),bb=matrix(1:4,2,2),cc=matrix(c(T,T,F,T,F,F),3,2),dd="string here",ee=list(c("hello","you"),matrix(c("hello","there"))),ff=matrix(c("red","green","blue","yellow")))
+# 4
+mylist <- list("tricked you",as.vector(matrix(1:6,3,2)))
+# 0
+mylist <- list(list(1,2,3),list(c(3,2),2),list(c(1,2),matrix(c(1,2))),rbind(1:10,100:91))
+# 2
+
+# 10.4
+
+# 10.5
+
+# b
+matlist <- list(matrix(c(T,F,T,T),2,2),
+                matrix(c("a","c","b","z","p","q"),3,2),
+                matrix(1:8,2,4))
+matlist
+i <- length(matlist)
+for(list in matlist){
+  matlist[[i]] <- t(list)
+  i <- i +1
+}
+matlist
