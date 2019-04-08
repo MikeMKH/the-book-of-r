@@ -111,6 +111,59 @@ mylist <- list(list(1,2,3),list(c(3,2),2),list(c(1,2),matrix(c(1,2))),rbind(1:10
 
 # 10.4
 
+mylist <- list()
+counter <- 1
+mycondition <- mynumbers[counter]<=5
+mycondition
+while(mycondition){
+  mylist[[counter]] <- diag(mynumbers[counter])
+  counter <- counter+1
+  if(counter<=length(mynumbers)){
+    mycondition <- mynumbers[counter]<=5
+  } else {
+    mycondition <- FALSE
+  }
+}
+mylist
+
+mynumbers <- c(2,2,2,2,5,2) # stops at 6
+mynumbers <- 2:20           # stops at 4
+mynumbers <- c(10,1,10,1,2) # empty list
+
+myfactoral <- 1
+while (mynum > 1) {
+  myfactoral <- myfactoral * mynum
+  mynum <- mynum - 1
+}
+myfactoral
+
+mynum <- 5  # 120
+mynum <- 12 # 479001600
+mynum <- 0  # 1
+
+index <- 1
+ecount <- 0
+result <- mystring
+while(ecount<2 && index<=nchar(mystring)){
+  letter <- substr(mystring, index, index)
+  if (toupper(letter) == "E") {
+    ecount <- ecount + 1
+  }
+  
+  if (ecount == 2) {
+    result <- substr(mystring, 1, index - 1)
+  }
+  
+  index <- index + 1
+}
+result
+
+mystring <- "R fever"   # "R fev"
+mystring <- "beautiful" # "beautiful"
+mystring <- "ECCENTRIC" # "ECC"
+mystring <- "ElAbOrAte" # "ElAbOrAt"
+mystring <- "eeeeek!"   # "e"
+
 # 10.5
 
 # b
