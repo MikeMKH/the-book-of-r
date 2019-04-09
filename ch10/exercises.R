@@ -110,7 +110,6 @@ mylist <- list(list(1,2,3),list(c(3,2),2),list(c(1,2),matrix(c(1,2))),rbind(1:10
 # 2
 
 # 10.4
-
 mylist <- list()
 counter <- 1
 mycondition <- mynumbers[counter]<=5
@@ -165,15 +164,14 @@ mystring <- "ElAbOrAte" # "ElAbOrAt"
 mystring <- "eeeeek!"   # "e"
 
 # 10.5
+foo <- matrix(1:12,4,3)
+apply(apply(foo, 1, sort, decreasing=TRUE), 2, prod)
 
-# b
 matlist <- list(matrix(c(T,F,T,T),2,2),
                 matrix(c("a","c","b","z","p","q"),3,2),
                 matrix(1:8,2,4))
-matlist
-i <- length(matlist)
-for(list in matlist){
-  matlist[[i]] <- t(list)
-  i <- i +1
-}
-matlist
+lapply(matlist, t)
+
+qux <- array(96:1,dim=c(4,4,2,3))
+apply(qux[,,2,], 3, diag)
+apply(apply(qux[,4,,], 3, dim), 1, sum)
