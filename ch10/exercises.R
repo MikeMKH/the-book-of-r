@@ -175,3 +175,69 @@ lapply(matlist, t)
 qux <- array(96:1,dim=c(4,4,2,3))
 apply(qux[,,2,], 3, diag)
 apply(apply(qux[,4,,], 3, dim), 1, sum)
+
+# 10.6
+foo <- 5
+bar <- c(2,3,1.1,4,0,4.1,3)
+loop2.result <- rep(NA,length(bar))
+
+condition <- TRUE
+index <- 1
+while(condition) {
+  if (bar[index] == 0) {
+    condition <- FALSE
+  } else {
+    loop2.result[index] <- foo / bar[index]
+  }
+  index <- index + 1
+}
+
+loop3.result = ifelse(is.finite(foo/bar), foo/bar, NA)
+
+mynumbers <- c(4,5,1,2,6,2,4,6,6,2)
+
+mylist <- list()
+for (i in 1:length(mynumbers)) {
+  if (mynumbers[i] <= 5) {
+    mylist[[i]] <- diag(mynumbers[i]) 
+  } else {
+    break;
+  }
+}
+mylist
+
+mylist <- list()
+index <- 1
+repeat {
+  if (index > length(mynumbers)) break
+  
+  if (mynumbers[index] <= 5) {
+    mylist[[index]] <- diag(mynumbers[index])
+    index <- index + 1
+  } else {
+    break;
+  }
+}
+mylist
+
+reslist <- list()
+index <- 1
+for (i in 1:length(matlist1)) {
+  for (j in 1:length(matlist2)) {
+    if (ncol(matlist1[[i]]) == nrow(matlist2[[j]])) {
+      reslist[[index]] <- matlist1[[i]] %*% matlist2[[j]]
+    } else {
+      reslist[[index]] <- "not possible"
+    }
+    index <- index + 1
+  }
+}
+reslist
+
+matlist1 <- list(matrix(1:4,2,2),matrix(1:4),matrix(1:8,4,2))
+matlist2 <- matlist1
+
+matlist1 <- list(matrix(1:4,2,2),matrix(2:5,2,2),
+                  matrix(1:16,4,2))
+matlist2 <- list(matrix(1:8,2,4),matrix(10:7,2,2),
+                 matrix(9:2,4,2))
