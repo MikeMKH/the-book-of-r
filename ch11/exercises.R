@@ -39,3 +39,50 @@ fac(5)
 fac(12)
 fac(0)
 fac(-6)
+
+# 11.2
+compundInterest <- function(P, i, t = 12, y, plotit = TRUE, ...) {
+  seq.y <- 1:y
+  seq.F <- P * (1 + i / (100 * t))^(t * seq.y)
+  if (plotit == TRUE) {
+    plot(type = "s", x = seq.y, y = seq.F, ...)
+  } else {
+    return (seq.F)
+  }
+}
+
+compundInterest(y = 10, P = 5000, i = 4.4, plotit = FALSE)[10]
+compundInterest(y = 20, P = 100, i = 22.9, plotit = TRUE, t = 12,
+                main="Compound interest calculator",
+                ylab="Balance (F)", xlab="Year (y)")
+iii <- compundInterest(y = 20, P = 100, i = 22.9, plotit = TRUE, t = 1)
+lines(1:20, iii, lty=2, type="s")
+legend("topleft", lty=c(1,2), legend=c("monthly interest","annual interest"))
+
+realRoots <- function(k1, k2, k3) {
+  if (any(c(missing(k1), missing(k2), missing(k3)))) {
+    return("missing argument(s)")
+  }
+    
+  test <- k2^2 - (4 * k1 * k3)
+  if (test < 0) {
+    cat("no real roots")
+  } else if (test == 0) {
+    return (-k2 / (2 * k1))
+  } else {
+    return(c((-k2 - test^0.5) / (2 * k1),
+             (-k2 + test^0.5) / (2 * k1)))
+  }
+}
+
+realRoots(k1 = 2, k2 = -1, k3 = -5)
+realRoots(1, 1, 1)
+
+realRoots(k1 = 1.3, k2 = -8, k3 = -3.13)
+realRoots(2.25, -3, 1)
+realRoots(1.4, -2.2, -5.1)
+realRoots(-5, 10.11, -9.9)
+
+realRoots()
+realRoots(0)
+realRoots(0, 0)
