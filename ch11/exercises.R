@@ -86,3 +86,47 @@ realRoots(-5, 10.11, -9.9)
 realRoots()
 realRoots(0)
 realRoots(0, 0)
+
+# 11.3
+foo <- list("a",c("b","c","d","e"),"f",c("g","h","i"))
+lapply(X = foo, FUN = function(s) {paste(s, "!")})
+
+fac.rec <- function(n) {
+  if (n < 1) {
+    return (1)
+  }
+  
+  return (n * fac.rec(n - 1))
+}
+
+fac.rec(5)
+fac.rec(12)
+fac.rec(0)
+fac.rec(-6)
+
+geolist <- function(x) {
+  g <- function(vec) {
+    return (prod(vec)^(1 / length(vec)))
+  }
+  
+  for(i in 1:length(x)) {
+    if (is.vector(x[[i]])) {
+      x[[i]] <- g(x[[i]])
+    } else if (is.matrix(x[[i]])) {
+      x[[i]] <- apply(X = x[[i]], MARGIN = 1, FUN = g)
+    } else {
+      x[[i]] <- N/A
+    }
+  }
+  return (x)
+}
+
+geolist(list(
+  1:3,
+  matrix(c(3.3,3.2,2.8,2.1,4.6,4.5,3.1,9.4),4,2),
+  matrix(c(3.3,3.2,2.8,2.1,4.6,4.5,3.1,9.4),2,4)))
+geolist(list(
+  1:9,
+  matrix(1:9,1,9),
+  matrix(1:9,9,1),
+  matrix(1:9,3,3)))
