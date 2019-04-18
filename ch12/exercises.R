@@ -50,3 +50,62 @@ invert(x = "hello")
 invert(x = list())
 
 # 12.2
+prog.test.fancy <- function(n, ...) {
+  result <- 0
+  prog.bar <- txtProgressBar(min = 0, max = n, ...)
+  for (i in 1:n) {
+    result <- result + 1
+    Sys.sleep(0.25)
+    setTxtProgressBar(prog.bar, value = i)
+  }
+  return (result)
+}
+
+s <- Sys.time()
+prog.test.fancy(8, style = 3, char = "r")
+e <- Sys.time()
+e - s
+
+# I think this is more interesting
+fib.Progress <- function(x, ...) {
+  if (x < 0) {
+    warning("x is negative, it is assumed you want a positive number")
+    x <- x * -1
+  }
+  
+  if (x = 0) {
+    x <- 1
+  }
+  
+  progress <- txtProgressBar(min = 0, max = x, ...)
+  result <- 1
+  for(n in 1:x) {
+    setTxtProgressBar(progress, n)
+    result <- result * n
+  }
+  
+  return (result)
+}
+
+fac.Progress(50)
+sapply(
+  X = c(3,2,7,0,9,13),
+  FUN = function(n) { fac.Progress(n, style = 3, char = ".") })
+
+fib <- function(n) {
+  if (n <= 2) {
+    return (1)
+  }
+  results <- c(1, 1, rep(NA, n))
+  for (i in 3:n) {
+    results[i] <- results[i - 2] + results[i - 1]
+  }
+  
+  return (results[n])
+}
+fib(0)
+fib(1)
+fib(2)
+fib(3)
+fib(4)
+fib(50)
