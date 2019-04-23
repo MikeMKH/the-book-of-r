@@ -26,3 +26,22 @@ tapply(InsectSprays$count, InsectSprays$spray, sum)
 # skipped g
 tapply(InsectSprays$count, InsectSprays$spray,
        function(x) round(mean(x >= 5) * 100.0, 2))
+
+# 13.3
+quantile(chickwts$weight, c(.10, .30, .90))
+a <- tapply(chickwts$weight, chickwts$feed, var)
+a[a == max(a)]
+
+IQR(quakes$depth)
+summary(quakes$mag[quakes$depth >= 400])
+
+depthcat <- cut(quakes$depth,
+                seq(min(quakes$depth), max(quakes$depth), length = 5),
+                include.lowest = TRUE,
+                right = FALSE)
+levels(depthcat)
+
+tapply(quakes$mag, depthcat, mean)
+tapply(quakes$mag, depthcat, sd)
+
+tapply(quakes$mag, depthcat, quantile, prob = .80)
