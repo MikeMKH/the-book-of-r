@@ -45,3 +45,35 @@ tapply(quakes$mag, depthcat, mean)
 tapply(quakes$mag, depthcat, sd)
 
 tapply(quakes$mag, depthcat, quantile, prob = .80)
+
+# 13.4
+w <- c(55,85,75,42,93,63,58,75,89,67)
+h <- c(161,185,174,154,188,178,170,167,181,178)
+cor(w, h)
+
+mtcars
+plot(mtcars$hp, mtcars$qsec,
+     xlab = "horsepower", ylab = "1/4 mile time")
+cor(mtcars$hp, mtcars$qsec)
+
+tranfac <- factor(mtcars$am, labels = c("auto","manual"))
+
+library(ggplot2)
+qplot(x = mtcars$hp, y = mtcars$qsec,
+      xlab = "horsepower", ylab = "1/4 mile time",
+      color = tranfac)
+
+cor(mtcars$hp[tranfac == "auto"], mtcars$qsec[tranfac == "auto"])
+cor(mtcars$hp[tranfac == "manual"], mtcars$qsec[tranfac == "manual"])
+
+sunflower <- chickwts$weight[chickwts$feed=="sunflower"]
+plot(sunflower, rep(0, length(sunflower)),
+     yaxt = "n", bty = "n",
+     xlab = "sunflower feed chick weights", ylab = "")
+abline(h = 0, col = "gray", lty = 2)
+
+sd(sunflower)
+IQR(sunflower)
+
+sd(sunflower[-which(sunflower == min(sunflower))])
+IQR(sunflower[-which(sunflower == min(sunflower))])
