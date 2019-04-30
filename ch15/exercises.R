@@ -12,3 +12,56 @@
 ((4 * 3)/2)/ 52 # Pr(face | black)
 (((4 * 3)/2)/ 52) *
   ((2 * 13)/52) # Pr(face and black)
+
+# 15.2
+  # realized, discrete
+  # random, discrete
+  # random, discrete
+  # random, continuous
+  # realized, discrete
+  # random, continuous
+
+S.stars <- 1:5
+1 - .1 - .13 - .21 - .15
+S.probility <- c(.1, .13, .21, .41, .15)
+cumsum(S.probility)
+mu.S <- sum(S.probility * S.stars)
+sd.S <- sqrt(sum(S.probility * (mu.S - S.stars)^2))
+sum(S.probility[3:5])
+barplot(S.probility, names.arg=S.stars,
+        space=0, ylim=c(0,0.5),
+        xlab="s", ylab="Pr(S = s)") # unimodal, symmetric, skew left
+
+
+f.w <- function(w) {
+  w.upper <- w>65 & w<=90
+  w.lower <- w>=40 & w<=65
+  
+  result <- rep(0, length(w))
+  result[w.upper] <- (90 - w[w.upper]) / 625
+  result[w.lower] <- (w[w.lower] - 40) / 625	
+  return(result)
+}
+
+F.w <- function(w) {
+  w.upper <- w>65 & w<=90
+  w.lower <- w>=40 & w<=65
+  
+  result <- rep(0, length(w))
+  result[w.upper] <- (180 * w[w.upper] - w[w.upper]^2 - 6850) / 1250
+  result[w.lower] <- (w[w.lower]^2 - 80 * w[w.lower] + 1600) / 1250
+  result[w>90] <- 1
+  
+  return(result)
+}
+
+f.w(55.2)
+F.w(55.2)
+
+1 - F.w(60)
+F.w(76.89) - F.w(60.3)
+
+  # bimodal, symmetric
+  # trimodal, asymmetric, skew right
+  # unimodal, symmetric
+  # unimodal, asymmetric, skew right
