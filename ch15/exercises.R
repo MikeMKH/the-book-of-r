@@ -24,18 +24,24 @@
 S.stars <- 1:5
 1 - .1 - .13 - .21 - .15
 S.probility <- c(.1, .13, .21, .41, .15)
-cumsum(S.probility)
+
+S.cumulative <- cumsum(S.probility)
+
 mu.S <- sum(S.probility * S.stars)
-sd.S <- sqrt(sum(S.probility * (mu.S - S.stars)^2))
+
+var.S <- sum(S.probility * (mu.S - S.stars)^2)
+sd.S <- sqrt(var.S)
+
 sum(S.probility[3:5])
+
+# unimodal, symmetric, skew left
 barplot(S.probility, names.arg=S.stars,
         space=0, ylim=c(0,0.5),
-        xlab="s", ylab="Pr(S = s)") # unimodal, symmetric, skew left
+        xlab="stars", ylab="Pr(S = stars)")
 
-
-f.w <- function(w) {
-  w.upper <- w>65 & w<=90
-  w.lower <- w>=40 & w<=65
+fw <- function(w) {
+  w.upper <- w >  65 & w <= 90
+  w.lower <- w >= 40 & w <= 65
   
   result <- rep(0, length(w))
   result[w.upper] <- (90 - w[w.upper]) / 625
@@ -43,23 +49,23 @@ f.w <- function(w) {
   return(result)
 }
 
-F.w <- function(w) {
-  w.upper <- w>65 & w<=90
-  w.lower <- w>=40 & w<=65
+Fw <- function(w) {
+  w.upper <- w >  65 & w <= 90
+  w.lower <- w >= 40 & w <= 65
   
   result <- rep(0, length(w))
   result[w.upper] <- (180 * w[w.upper] - w[w.upper]^2 - 6850) / 1250
   result[w.lower] <- (w[w.lower]^2 - 80 * w[w.lower] + 1600) / 1250
-  result[w>90] <- 1
+  result[w > 90] <- 1
   
   return(result)
 }
 
-f.w(55.2)
-F.w(55.2)
+fw(55.2)
+Fw(55.2)
 
-1 - F.w(60)
-F.w(76.89) - F.w(60.3)
+1 - Fw(60)
+Fw(76.89) - Fw(60.3)
 
   # bimodal, symmetric
   # trimodal, asymmetric, skew right
