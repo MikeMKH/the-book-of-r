@@ -29,3 +29,14 @@ mu.X <- stations * p
 
 # variance of n successes
 sigma.X <- sqrt(mu.X * (1 - p))
+
+# 16.2
+1 - ppois(q = 100, lambda = 107)
+
+dpois(x = 0, lambda = 107)
+
+barplot(ppois(60:150, 107), ylim = 0:1, space = 0,
+        names.arg = 60:150, ylab = "Pr(X=x)", xlab = "x")
+
+traffic <- rpois(n = 260, lambda = 107)
+hist(traffic, xlim = c(60, 150))
