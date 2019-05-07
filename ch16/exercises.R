@@ -40,3 +40,36 @@ barplot(ppois(60:150, 107), ylim = 0:1, space = 0,
 
 traffic <- rpois(n = 260, lambda = 107)
 hist(traffic, xlim = c(60, 150))
+
+# 16.3
+trees.min = 3
+trees.max = 70
+
+punif(q = 5.5, min = trees.min, max = trees.max)
+
+b <- qunif(p = 1 - .15, min = trees.min, max = trees.max)
+b
+
+trees.mu = (trees.min + trees.max) / 2
+trees.sigma = sqrt((trees.max - trees.min)^2 / 12)
+
+punif(trees.mu + .5 * trees.sigma, trees.min, trees.max) -
+  punif(tree.mu - .5 * trees.sigma, trees.min, trees.max)
+
+d <- dunif(trees.mu, trees.min, trees.max)
+plot(c(trees.min, trees.max), rep(d, 2),
+     type = "o", pch = 19,
+     xlim = c(trees.min - 1, trees.max + 1), ylim = c(0, d),
+     ylab = "f(x)", xlab = "x")
+abline(h = 0, lty = 2)
+segments(c(trees.min - 5, trees.max + 5, trees.min, trees.max),
+         rep(0, 4), rep(c(trees.min, trees.max), 2),
+         rep(c(0, d), each=2), lty = rep(1:2, each = 2))
+points(c(trees.min, trees.max), c(0, 0))
+
+# sim.b seems to be closer to b
+sim.a <- runif(n = 10, min = trees.min, trees.max)
+quantile(x = f.a, probs = 1 - .15)
+
+sim.b <- runif(1000, trees.min, trees.max)
+quantile(f.b, probs = 1 - .15)
