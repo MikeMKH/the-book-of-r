@@ -73,3 +73,43 @@ quantile(x = f.a, probs = 1 - .15)
 
 sim.b <- runif(1000, trees.min, trees.max)
 quantile(f.b, probs = 1 - .15)
+
+# 16.4
+time.mu = 17
+time.sigma = 4.5
+
+1 - pnorm(20, time.mu, time.sigma)
+pnorm(10, time.mu, time.sigma) - pnorm(5, time.mu, time.sigma)
+qnorm(1 - .1, time.mu, time.sigma)
+
+xvals <- seq(time.mu - 4 * time.sigma,
+             time.mu + 4 * time.sigma,
+             length = 10000)
+fx <- dnorm(xvals, time.mu, time.sigma)
+slow10 <- qnorm(1 - .1, time.mu, time.sigma)
+xvals.sub <- xvals[xvals >= slow10]
+fx.sub <- fx[xvals >= slow10]
+plot(xvals, fx, type = "l", main = "N(17,4.5) distribution",
+     xlab = "x", ylab = "f(x)")
+abline(h = 0, col = "gray")
+abline(v = slow10, lty = 2)
+polygon(rbind(c(slow10, 0),
+              cbind(xvals.sub, fx.sub),
+              c(max(xvals), 0)),
+        border = NA, col = "gray")
+
+rnorm(10, time.mu, time.sigma)
+
+blades.mu <- 10
+blades.sigma <- 2
+
+pnorm(11, blades.mu, blades.sigma) -
+  pnorm(9.5, blades.mu, blades.sigma)
+
+pnorm((11 - blades.mu) / blades.sigma) -
+  pnorm((9.5 - blades.mu) / blades.sigma)
+
+b.iii <- qnorm(.025, blades.mu, blades.sigma)
+b.iii
+
+(b.iii - blades.mu) / blades.sigma
