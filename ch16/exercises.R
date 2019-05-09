@@ -113,3 +113,25 @@ b.iii <- qnorm(.025, blades.mu, blades.sigma)
 b.iii
 
 (b.iii - blades.mu) / blades.sigma
+
+# 16.5
+erupts = 3500
+lambda.days = erupts / 365.25
+
+xvals <- seq(0, 1, length = 100)
+plot(xvals, dexp(xvals, lambda.days),
+     type = "l", xlab = "x", ylab = "f(x)",
+     main = "EXP(0.89) distribution")
+abline(h = 0, col = "gray")
+abline(v = 0, col = "gray")
+
+pexp(.5 / 24, lambda.days)
+qexp(1 - .1, lambda.days) * 24
+
+1 - pexp(0:75, 1/11)
+qexp(1 - .5, 1/11)
+
+pexp(5, 1/11)
+pexp(6, 1/9)
+1 - pexp(15, 1/11)
+1 - pexp(15, 1/9)
