@@ -70,3 +70,32 @@ rate.before <- c(52,66,89,87,89,72,66,65,49,62,70,52,75,63,65,61)
 rate.after <- c(51,66,71,73,70,68,60,51,40,57,65,53,64,56,60,59) 
 wrap.t.test(x = rate.after, y = rate.before,
             alternative = "less", paired = TRUE, conf.level = 0.95)
+
+# 18.3
+# H0 : p = .9, HA : p < .9
+.9 * 89 > 5
+(1 - .9) * 89 > 5
+
+# strong evidence to reject H0
+prop.test(x = 71, n = 89, p = .9, alternative = "less",
+          conf.level = .9, correct = FALSE)
+
+n <- 89
+p.hat <- 71 / n
+p.hat + c(-1, 1) * qnorm(.95) * sqrt(p.hat * (1 - p.hat) / n)
+
+x1 <- 97
+n1 <- 445
+p.hat1 <- x1 / n1
+x2 <- 90
+n2 <- 419
+p.hat2 <- x2 / n2
+p.star <- (x1 + x2) / (n1 + n2)
+Z <- (p.hat2 - p.hat1) / sqrt(p.star * (1 - p.star) * (1/n1 + 1/n2))
+Z
+2 * pnorm(Z) # no evidence that proportion varies between x1 and x2
+
+(p.hat2 - p.hat1) + c(-1, 1) * qnorm(.975) *
+  sqrt(p.star * (1 - p.star) * (1/n1 + 1/n2))
+
+# skip f - h
