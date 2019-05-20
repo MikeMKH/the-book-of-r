@@ -99,3 +99,18 @@ Z
   sqrt(p.star * (1 - p.star) * (1/n1 + 1/n2))
 
 # skip f - h
+
+# 18.4
+?HairEyeColor
+summary(HairEyeColor)
+
+chisq.test(x = HairEyeColor[,,1] + HairEyeColor[,,2], p = c(.01))
+# strong evidence against hair color being related to eye color
+
+library("car")
+?Duncan
+summary(Duncan)
+
+chisq.test(table(Duncan$type)) # p-value = 0.015
+# alpha = 0.05, weak evidence rejecting H0 thus their does not appear to be unifomly represented in the data
+# alpha = 0.01, no evidence rejecting H0 thus their do appear to be unifomly represented in the data
