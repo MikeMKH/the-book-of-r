@@ -114,3 +114,68 @@ summary(Duncan)
 chisq.test(table(Duncan$type)) # p-value = 0.015
 # alpha = 0.05, weak evidence rejecting H0 thus their does not appear to be unifomly represented in the data
 # alpha = 0.01, no evidence rejecting H0 thus their do appear to be unifomly represented in the data
+
+# 18.5
+typeI.mean <- function(mu0, sigma, n, alpha,
+                       test = "two.sided", ITERATIONS = 10000) {
+  stats <- rep(NA,ITERATIONS)
+  for(i in 1:ITERATIONS){
+    temporary.sample <- rnorm(n=n,mean=mu0,sd=sigma)
+    temporary.mean <- mean(temporary.sample)
+    temporary.sd <- sd(temporary.sample)
+    stats[i] <- (temporary.mean-mu0)/(temporary.sd/sqrt(n))
+  }
+  pvals <- pt(stats, df = n-1)
+  
+  if (test == "two.sided") {
+    result <- pvals
+    result[stats > 0] <- 1 - pvals[stats > 0]
+    return(mean(result < alpha/2))  
+  } else if (test == "less") {
+    return(mean(pvals < alpha))
+  } else if (test == "greater") {
+    return(mean((1 - pvals) < alpha))
+  } else {
+    stop("test argument not recognised")
+  }
+}
+
+typeI.mean(mu0 = 0, sigma = 1, n = 40, alpha = 0.05, test = "less")
+typeI.mean(mu0 = 0, sigma = 1, n = 40, alpha = 0.05, test = "greater")
+typeI.mean(mu0 = 0, sigma = 1, n = 40, alpha = 0.05, test = "two.sided")
+
+typeI.mean(mu0 = -4, sigma = .3, n = 60, alpha = 0.01, test = "less")
+typeI.mean(mu0 = -4, sigma = .3, n = 60, alpha = 0.01, test = "greater")
+typeI.mean(mu0 = -4, sigma = .3, n = 60, alpha = 0.01, test = "two.sided")
+
+
+typeII.mean <- function(mu0, muA, sigma, n, alpha,
+                        test = "two.sided", ITERATIONS = 10000) {
+  stats <- rep(NA,ITERATIONS)
+  for(i in 1:ITERATIONS){
+    temporary.sample <- rnorm(n=n,mean=muA,sd=sigma)
+    temporary.mean <- mean(temporary.sample)
+    temporary.sd <- sd(temporary.sample)
+    stats[i] <- (temporary.mean-mu0)/(temporary.sd/sqrt(n))
+  }
+  pvals <- pt(stats, df = n-1)
+  
+  if (test == "two.sided") {
+    result <- pvals
+    result[stats > 0] <- 1 - pvals[stats > 0]
+    return(mean(result < alpha/2))  
+  } else if (test == "less") {
+    return(mean(pvals < alpha))
+  } else if (test == "greater") {
+    return(mean((1 - pvals) < alpha))
+  } else {
+    stop("test argument not recognised")
+  }
+}
+
+typeII.mean(mu0 = -3.2, muA = -3.3, sigma = 0.1,
+            n = 25, alpha = 0.05, test = "two.sided")
+typeII.mean(mu0 = 8894, muA = 5600, sigma = 3888,
+            n = 9, alpha = 0.05, test = "less")
+typeII.mean(mu0 = .44, muA = .4, sigma = 2.4,
+            n = 68, alpha = 0.05, test = "greater")
