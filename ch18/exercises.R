@@ -179,3 +179,42 @@ typeII.mean(mu0 = 8894, muA = 5600, sigma = 3888,
             n = 9, alpha = 0.05, test = "less")
 typeII.mean(mu0 = .44, muA = .4, sigma = 2.4,
             n = 68, alpha = 0.05, test = "greater")
+
+# 18.6
+power.mean <- function(nvec,...){
+  nlen <- length(nvec)
+  result <- rep(NA,nlen)
+  pbar <- txtProgressBar(min=0,max=nlen,style=3)
+  for(i in 1:nlen){
+    result[i] <- typeII.mean(n=nvec[i],...)
+    setTxtProgressBar(pbar,i)
+  }
+  close(pbar)
+  return(result)
+}
+
+power.mean(nvec = 50,  test="two.sided",
+           mu0 = 10, muA = 10.5, sigma = .9, alpha = 0.01)
+
+power.mean(nvec = 44,  test="less",
+           mu0 = 80, muA = 78.5, sigma = 3.1, alpha = 0.01)
+power.mean(nvec = 44,  test="less",
+           mu0 = 80, muA = 78.5, sigma = 3.1, alpha = 0.05)
+# 77.89 for alpha 0.01, 93.56 for alpha 0.05
+
+sample.sizes <- 5:100
+
+snacks <- power.mean(nvec = sample.sizes,  test="less",
+                     mu0 = 80, muA = 78.5, sigma = 3.1, alpha = 0.05)
+minimum.n <- sample.sizes[min(which(snacks >= 0.8))]
+
+snacks2 <- power.mean(nvec = sample.sizes,  test="less",
+                      mu0 = 80, muA = 78.5, sigma = 3.1, alpha = 0.01)
+minimum.n2 <- sample.sizes[min(which(snacks2 >= 0.8))]
+
+plot(sample.sizes, snacks, xlab = "sample size n", ylab = "simulated power")
+points(sample.sizes, snacks2, col = "grey")
+abline(h = 0.8, lty = 2)
+abline(v = c(minimum.n, minimum.n2), lty = 3, col = c("black", "grey"))
+legend("bottomright", legend = c("alpha=0.05","alpha=0.01"),
+       col = c("black","grey"), pch = 1)
