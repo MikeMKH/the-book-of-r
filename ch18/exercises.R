@@ -217,4 +217,4 @@ points(sample.sizes, snacks2, col = "grey")
 abline(h = 0.8, lty = 2)
 abline(v = c(minimum.n, minimum.n2), lty = 3, col = c("black", "grey"))
 legend("bottomright", legend = c("alpha=0.05","alpha=0.01"),
-       col = c("black","grey"), pch = 1)
+       col = c("black", "grey"), pch = 1)
