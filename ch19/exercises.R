@@ -37,3 +37,30 @@ iris.check(iris$Petal.Width)   # normal, false
 summary(aov(Sepal.Length~Species, data = iris))
 summary(aov(Sepal.Width~Species, data = iris))
 # strong evidence to reject H0 and conclude that sepal lengths and widths do vary according to species
+
+# 19.2
+?quakes
+summary(quakes)
+depth <- cut(x = quakes$depth, breaks = c(0, 200, 400, 680))
+
+m <- tapply(quakes$stations, depth, mean)
+mc <- quakes$stations - m[as.numeric(depth)]
+hist(mc)
+qqnorm(mc)
+qqline(mc) # non-normal
+
+kruskal.test(quakes$stations~depth) # p-value = 0.0106
+
+library("MASS")
+?Cars93
+summary(Cars93)
+
+means <- aggregate(Cars93$Length,
+                   by = list(Cars93$AirBags, Cars93$Man.trans.avail),
+                   FUN = mean)
+
+interaction.plot(x.factor = means[,1], trace.factor = means[,2],
+                 respons = means$x, trace.label = "Manual avail.",
+                 xlab = "Airbags", ylab = "Mean length") # no
+summary(aov(Length~AirBags+Man.trans.avail+AirBags:Man.trans.avail, Cars93))
+#  evidence of an interactive effect, no main effect
