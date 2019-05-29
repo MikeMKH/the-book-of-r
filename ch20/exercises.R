@@ -33,3 +33,20 @@ legend("topleft", legend = c("90% CI", "90% PI"),
 
 incomplete.obs <- which(is.na(survey$Height) | is.na(survey$Pulse))
 abline(h = mean(survey$Height[-incomplete.obs]), col = 2, lty = 3, lwd = 3)
+
+data("mtcars")
+?mtcars
+summary(mtcars)
+
+plot(mtcars$mpg~mtcars$wt, ylab = "mpg", xlab = "weight (1000 lbs)")
+carfit <- lm(mpg~wt, data = mtcars)
+abline(carfit, lwd = 2)
+
+summary(carfit)
+# mpg = 37.2851 + (-5.3445 * wt)
+
+predict(carfit, newdata = data.frame(wt = 6),
+        interval = "confidence", level = 0.95)
+predict(carfit, newdata = data.frame(wt = 6),
+        interval = "prediction", level = 0.95)
+# 6,000 is outside of the existing data
