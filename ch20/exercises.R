@@ -50,3 +50,36 @@ predict(carfit, newdata = data.frame(wt = 6),
 predict(carfit, newdata = data.frame(wt = 6),
         interval = "prediction", level = 0.95)
 # 6,000 is outside of the existing data
+
+# 20.2
+library("MASS")
+?survey
+summary(survey)
+
+boxplot(survey$Height~survey$Exer)
+
+survfit <- lm(Height~Exer, data = survey)
+summary(survfit)
+# it seems that those who exercise less are shorter
+
+predict(survfit, interval = "prediction", level = 0.95,
+        newdata = data.frame(Exer = factor(c("Freq", "Some", "None"))))
+
+summary(aov(Height~Exer, data = survey))
+# same as lm
+
+none.first <- relevel(survey$Exer, ref = "None")
+levels(none.first)
+summary(aov(Height~none.first, data = survey)) # no difference
+
+?mtcars
+summary(mtcars)
+
+carfit <- lm(qsec~gear, data = mtcars)
+summary(carfit) # no evidence
+
+carfit2 <- lm(qsec~factor(gear), data = mtcars)
+summary(carfit2) # evidence, 4 gears seems to be the best
+
+plot(mtcars$qsec~mtcars$gear, xlab = "# gears", ylab = "1/4 mile time (sec)")
+abline(carfit, lwd = 2) # model is not explained by a straight line
