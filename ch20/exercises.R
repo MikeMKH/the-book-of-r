@@ -83,3 +83,25 @@ summary(carfit2) # evidence, 4 gears seems to be the best
 
 plot(mtcars$qsec~mtcars$gear, xlab = "# gears", ylab = "1/4 mile time (sec)")
 abline(carfit, lwd = 2) # model is not explained by a straight line
+
+?chickwts
+summary(chickwts)
+plot(chickwts$weight~chickwts$feed, xlab = "feed", ylab = "weight")
+
+chickfit <- lm(weight~feed, data = chickwts)
+summary(chickfit)
+
+fit <- function(level) {
+  return (
+    predict(chickfit,  level = level, interval = "prediction",
+        newdata = data.frame(feed = factor(c("casein", "soybean", "sunflower"))))
+  )
+}
+fit(0.01)
+fit(0.50)
+fit(0.90)
+fit(0.95)
+fit(0.99)
+fit(0.99999)
+
+confint(chickfit)
