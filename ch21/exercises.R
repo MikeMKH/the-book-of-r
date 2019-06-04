@@ -30,3 +30,20 @@ predict <- predict(catsfit, newdata = data.frame(
 lines(seq, predict[1:n], col = 2)
 lines(seq, predict[(n+1):(2*n)], col = 1)
 # shows that sex does not matter much
+
+library("boot")
+?nuclear
+summary(nuclear)
+pairs(nuclear)
+
+nufit1 <- lm(cost~t1+t2, data = nuclear)
+summary(nufit1)
+
+nufit2 <- lm(cost~t1+t2+date, data = nuclear)
+summary(nufit2)
+# date should be used instead of t1
+
+nufit <- lm(cost~date+cap+ne, data = nuclear)
+summary(nufit)
+confint(nufit)
+# -6458 + 95.44 * date + 0.4157 * cap + 126.1 * ne
