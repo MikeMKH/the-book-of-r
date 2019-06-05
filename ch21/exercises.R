@@ -47,3 +47,24 @@ nufit <- lm(cost~date+cap+ne, data = nuclear)
 summary(nufit)
 confint(nufit)
 # -6458 + 95.44 * date + 0.4157 * cap + 126.1 * ne
+
+detroit <- data.frame(Murder = c(8.6,8.9,8.52,8.89,13.07,14.57,21.36,28.03,31.49,37.39,46.26,47.24,52.33),
+                      Police = c(260.35,269.8,272.04,272.96,272.51,261.34,268.89,295.99,319.87,341.43,356.59,376.69,390.19),
+                      Unemploy = c(11,7,5.2,4.3,3.5,3.2,4.1,3.9,3.6,7.1,8.4,7.7,6.3),
+                      Guns = c(178.15,156.41,198.02,222.1,301.92,391.22,665.56,1131.21,837.6,794.9,817.74,583.17,709.59))
+summary(detroit)
+pairs(detroit)
+
+detfit <- lm(Murder~Police+Unemploy+Guns, data = detroit)
+confint(detfit)
+summary(detfit)
+# -68.852509 + Police * 0.280799 + Unemploy * 0.147248 + Guns * 0.014177
+summary(detfit)$r.squared
+# no causal relationship can be shown from the limited data
+
+detfit2 <- lm(Murder~Police+Guns, data = detroit)
+summary(detfit2)
+summary(detfit2)$r.squared
+
+predict(detfit2, interval="confidence", level = 0.99,
+        newdata = data.frame(Police = c(300, 300), Guns = c(500, 0)))
