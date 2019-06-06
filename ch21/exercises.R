@@ -68,3 +68,55 @@ summary(detfit2)$r.squared
 
 predict(detfit2, interval="confidence", level = 0.99,
         newdata = data.frame(Police = c(300, 300), Guns = c(500, 0)))
+
+# 21.2
+roll <- data.frame(distance = c(573,534,495,451,395,337,253),
+                   height = c(1,0.8,0.6,0.45,0.3,0.2,0.1))
+plot(roll$distance~roll$height, xlab = "height", ylab = "distance")
+
+rollfit.order2 <- lm(distance~height+I(height^2), data = roll)
+summary(rollfit.order2)
+
+rollfit.order3 <- lm(distance~height+I(height^2)+I(height^3), data = roll)
+summary(rollfit.order3)
+
+rollfit.order4 <- lm(distance~height+I(height^2)+I(height^3)+I(height^4), data = roll)
+summary(rollfit.order4)
+# order 3 is significant in it's highest term, order 4 is not, thus order 3 is a better model
+
+seq <- seq(0.05, 1.05, length = 100)
+predict <- predict(rollfit.order3, newdata = data.frame(height = seq),
+                   interval = "confidence", level = 0.9)
+plot(roll$distance~roll$height, xlab = "height", ylab = "distance")
+lines(seq, predict[,1])
+lines(seq, predict[,2], lty = 2)
+lines(seq, predict[,3], lty = 2)
+
+library("faraway")
+?trees
+summary(trees)
+pairs(trees)
+
+treesfit.order2 <- lm(Volume~Girth+I(Girth^2), data = trees)
+summary(treesfit.order2)
+# Volume = -2.09214 * Girth + 0.25454 * Girth^2 + 10.78627
+# F 350.5
+
+treesfit.orderlg <- lm(log(Volume)~log(Girth), data = trees)
+summary(treesfit.orderlg)
+# log(Volume) = 2.19997 * log(Girth) + -2.35332
+# F 599.7
+
+tree.predict <- function(fit, type = 2) {
+  seq <- seq(7, 21, length = 100)
+  p <- predict(fit, newdata = data.frame(Girth = seq),
+               interval = "confidence", level = 0.95)
+  lines(seq, p[,1], lty = (type - 1))
+  lines(seq, p[,2], lty = type)
+  lines(seq, p[,3], lty = type)
+  return(p)
+}
+
+plot(trees$Volume~trees$Girth, xlab = "Girth (in)", ylab = "Volume (ft^3)")
+tree.predict(treesfit.order2, type = 2)
+tree.predict(treesfit.orderlg, type = 4)
