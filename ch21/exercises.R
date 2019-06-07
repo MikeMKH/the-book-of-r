@@ -107,16 +107,46 @@ summary(treesfit.orderlg)
 # log(Volume) = 2.19997 * log(Girth) + -2.35332
 # F 599.7
 
-tree.predict <- function(fit, type = 2) {
+tree.predict <- function(fit, type = 2, exp = FALSE) {
   seq <- seq(7, 21, length = 100)
   p <- predict(fit, newdata = data.frame(Girth = seq),
                interval = "confidence", level = 0.95)
-  lines(seq, p[,1], lty = (type - 1))
-  lines(seq, p[,2], lty = type)
-  lines(seq, p[,3], lty = type)
+  
+  if (exp) {
+    p1 <- exp(p[,1])
+    p2 <- exp(p[,2])
+    p3 <- exp(p[,3])
+  } else {
+    p1 <- p[,1]
+    p2 <- p[,2]
+    p3 <- p[,3]
+  }
+  
+  lines(seq, p1, lty = (type - 1))
+  lines(seq, p2, lty = type)
+  lines(seq, p3, lty = type)
   return(p)
 }
 
 plot(trees$Volume~trees$Girth, xlab = "Girth (in)", ylab = "Volume (ft^3)")
 tree.predict(treesfit.order2, type = 2)
-tree.predict(treesfit.orderlg, type = 4)
+tree.predict(treesfit.orderlg, type = 6, exp = TRUE)
+
+library("MASS")
+?mtcars
+summary(mtcars)
+pairs(mtcars)
+
+carsfit.mpg <- lm(mpg~hp+wt+disp, data = mtcars)
+summary(carsfit.mpg)
+
+carsfit.gpm <- lm(I(1/mpg)~hp+wt+disp, data = mtcars)
+summary(carsfit.gpm)
+# gpm seems to have more evenly distributed coefficient, the R^2 and F-statistics are similar
+
+carsfit.order2.mpg <- lm(mpg~disp+I(disp^2)+hp+I(hp^2)+wt+I(wt^2), data = mtcars)
+summary(carsfit.order2.mpg)
+
+carsfit.order2.gpm <- lm(I(1/mpg)~disp+I(disp^2)+hp+I(hp^2)+wt+I(wt^2), data = mtcars)
+summary(carsfit.order2.gpm)
+# mpg seems to be a better fit
