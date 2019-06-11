@@ -150,3 +150,61 @@ summary(carsfit.order2.mpg)
 carsfit.order2.gpm <- lm(I(1/mpg)~disp+I(disp^2)+hp+I(hp^2)+wt+I(wt^2), data = mtcars)
 summary(carsfit.order2.gpm)
 # mpg seems to be a better fit
+
+# 21.3
+library("MASS")
+?cats
+summary(cats)
+pairs(cats)
+
+catsfit <- lm(Hwt~Bwt*Sex, data = cats)
+summary(catsfit)
+# sex male is now providing weak evidence of significance
+
+plot(cats$Bwt, cats$Hwt, col = cats$Sex,
+     ylab = "Heart weight (g)", xlab = "Body weight (kg)")
+legend("topleft", legend = c("Female","Male"), col = 1:2, pch = 1)
+catscf <- coef(catsfit)
+abline(coef = catscf[1:2])
+abline(coef = c(sum(catscf[c(1,3)]), sum(catscf[c(2,4)])), col = 2)
+
+predict(catsfit, newdata = data.frame(Bwt = 3.4, Sex = "F"),
+        interval = "prediction", level = 0.95)
+
+library("faraway")
+?trees
+summary(trees)
+pairs(trees)
+
+treesfit1 <- lm(Volume~Girth+Height, data = trees)
+summary(treesfit1)
+
+treesfit2 <- lm(Volume~Girth*Height, data = trees)
+summary(treesfit2)
+
+treesfit3 <- lm(log(Volume)~log(Girth)+log(Height), data = trees)
+summary(treesfit3)
+
+treesfit4 <- lm(log(Volume)~log(Girth)*log(Height), data = trees)
+summary(treesfit4)
+# either the log or the interaction model are better but we need to understand the use of the models first
+
+library("MASS")
+?mtcars
+summary(mtcars)
+pairs(mtcars)
+
+carsfit <- lm(mpg~hp*factor(cyl)+wt, data = mtcars)
+summary(carsfit)
+
+coef(carsfit)
+coef(carsfit)[3]
+coef(carsfit)[3]+coef(carsfit)[4]
+coef(carsfit)[3]+coef(carsfit)[6]
+coef(carsfit)[3]+coef(carsfit)[7]
+# as hp increases mpg decreases at a slower rate for higher cyl
+
+predict(carsfit, newdata = data.frame(wt = c(2.1, 3.9, 2.9),
+                                      hp = c(100, 210, 200),
+                                      cyl = c(4, 8, 6)),
+        interval = "confidence", level = 0.95)
