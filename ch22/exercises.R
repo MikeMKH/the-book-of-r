@@ -30,3 +30,50 @@ summary(galileo.4)
 
 anova(galileo.0, galileo.1, galileo.2, galileo.3, galileo.4)
 # yes the difference between order 3 and 4 is not statistically significant
+
+library("faraway")
+?diabetes
+summary(diabetes)
+
+diabetes <- na.omit(diabetes[, c("chol", "age", "gender", "height", "weight",
+                                 "frame", "waist", "hip", "location")])
+summary(diabetes)
+pairs(diabetes)
+
+diabetes.null <- lm(chol~1, data = diabetes)
+summary(diabetes.null)
+
+diabetes.full <- lm(chol~age*gender*height*weight*frame*waist*hip+location,
+                    data = diabetes)
+summary(diabetes.full)
+
+diabetes.step <- step(
+  diabetes.null,
+  scope = .~.+age*gender*height*weight*frame*waist*hip+location
+)
+summary(diabetes.step)
+
+add1(
+  diabetes.null,
+  scope = .~.+age*gender*height*weight*frame*waist*hip+location,
+  test = "F"
+)
+diabetes.1 <- update(diabetes.null, .~.+age)
+add1(
+  diabetes.1,
+  scope = .~.+age*gender*height*weight*frame*waist*hip+location,
+  test = "F"
+)
+diabetes.2 <- update(diabetes.1, .~.+frame)
+add1(
+  diabetes.2,
+  scope = .~.+age*gender*height*weight*frame*waist*hip+location,
+  test = "F"
+)
+summary(diabetes.1)
+summary(diabetes.2)
+# forward selection stops after age and frame
+
+diabetes.full.step <- step(diabetes.full)
+summary(diabetes.full.step)
+# way more complex, maybe it is better
