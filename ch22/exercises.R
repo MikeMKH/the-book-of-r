@@ -77,3 +77,70 @@ summary(diabetes.2)
 diabetes.full.step <- step(diabetes.full)
 summary(diabetes.full.step)
 # way more complex, maybe it is better
+
+library("MASS")
+?mtcars
+summary(mtcars)
+pairs(mtcars)
+
+cars.null <- lm(I(1/mpg)~1, data = mtcars)
+summary(cars.null)
+
+cars.step <- step(
+  cars.null,
+  scope = .~.+wt*hp*factor(cyl)*disp*am+factor(gear)+drat+vs+qsec+carb
+)
+summary(cars.step)
+# the GPM model is simpler than the MPG model
+
+library("faraway")
+?diabetes
+summary(diabetes)
+
+d <- diabetes[-which(is.na(diabetes$age) | is.na(diabetes$frame)),]
+
+d.0 <- lm(chol~1, data = d)
+d.1 <- lm(chol~age, data = d)
+anova(d.0, d.1)
+d.2 <- lm(chol~age+frame, data = d)
+anova(d.0, d.1, d.2)
+d.3 <- lm(chol~age*frame, data = d)
+anova(d.0, d.1, d.2, d.3)
+
+d.0 <- lm(chol~1, data = d)
+summary(d.0)
+add1(d.0, scope = .~.+stab.glu+hdl+ratio+glyhb+location+age+gender+
+       height+weight+frame+bp.1s+bp.1d+bp.2s+bp.2d+waist+hip+time.ppn,
+     test = "F")
+
+d.1 <- update(d.0, formula = .~.+ratio)
+summary(d.1)
+add1(d.1, scope = .~.+stab.glu+hdl+ratio+glyhb+location+age+gender+
+       height+weight+frame+bp.1s+bp.1d+bp.2s+bp.2d+waist+hip+time.ppn,
+     test = "F")
+
+d.2 <- update(d.1, formula = .~.+hdl)
+summary(d.2)
+add1(d.2, scope = .~.+stab.glu+hdl+ratio+glyhb+location+age+gender+
+       height+weight+frame+bp.1s+bp.1d+bp.2s+bp.2d+waist+hip+time.ppn,
+     test = "F")
+
+d.3 <- update(d.2, formula = .~.+height)
+summary(d.3)
+add1(d.3, scope = .~.+stab.glu+hdl+ratio+glyhb+location+age+gender+
+       height+weight+frame+bp.1s+bp.1d+bp.2s+bp.2d+waist+hip+time.ppn,
+     test = "F")
+
+d.4 <- update(d.3, formula = .~.+glyhb)
+summary(d.4)
+add1(d.4, scope = .~.+stab.glu+hdl+ratio+glyhb+location+age+gender+
+       height+weight+frame+bp.1s+bp.1d+bp.2s+bp.2d+waist+hip+time.ppn,
+     test = "F")
+
+d.5 <- update(d.4, formula = .~.+bp.2d)
+summary(d.5)
+add1(d.5, scope = .~.+stab.glu+hdl+ratio+glyhb+location+age+gender+
+       height+weight+frame+bp.1s+bp.1d+bp.2s+bp.2d+waist+hip+time.ppn,
+     test = "F")
+
+summary(d.5)
