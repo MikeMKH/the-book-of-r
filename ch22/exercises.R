@@ -144,3 +144,31 @@ add1(d.5, scope = .~.+stab.glu+hdl+ratio+glyhb+location+age+gender+
      test = "F")
 
 summary(d.5)
+
+# 22.2
+library("boot")
+?nuclear
+summary(nuclear)
+pairs(nuclear)
+
+model <- lm(cost~date+cap+pt+ne, data = nuclear)
+summary(model)
+
+plot(model, which = 1)
+plot(model, which = 2)
+# points appear randomly scattered around zero with no indication of heteroscedasticity with one extreme case labeled 19
+
+cutoff <- 4 / nrow(nuclear)
+cutoff
+plot(model, which = 4)
+abline(h = cutoff, lty = 2)
+# observation 19 is highly influential
+
+plot(model, which = 5, cook.levels = c(cutoff, 0.5, 1.0))
+# 19 breaks the 0.125 line and 12 almost breaks it
+
+model2 <- lm(cost~date+cap+pt+ne, data = nuclear[-19,])
+summary(model2)
+plot(model2, which = 1)
+plot(model2, which = 2)
+# points appear randomly scattered around zero with no indication of heteroscedasticity
