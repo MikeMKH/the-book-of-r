@@ -172,3 +172,19 @@ summary(model2)
 plot(model2, which = 1)
 plot(model2, which = 2)
 # points appear randomly scattered around zero with no indication of heteroscedasticity
+
+library("faraway")
+?diabetes
+summary(diabetes)
+pairs(diabetes)
+
+fit <- lm(chol~age*frame+waist, data = diabetes)
+summary(fit)
+
+plot(fit, which = 1)
+plot(fit, which = 2)
+# randomness around zero and homoscedasticity with extreme values of 148, 295, and 63
+
+cutoff <- 4/(nrow(diabetes) - 15)
+cutoff
+plot(fit, which = 5, cook.levels = c(1, 3, 5) * cutoff)
