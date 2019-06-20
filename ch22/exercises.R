@@ -188,3 +188,37 @@ plot(fit, which = 2)
 cutoff <- 4/(nrow(diabetes) - 15)
 cutoff
 plot(fit, which = 5, cook.levels = c(1, 3, 5) * cutoff)
+
+library(ggplot2)
+?diamonds
+summary(diamonds)
+
+plot(diamonds$carat,diamonds$price,pch=19,col=as.numeric(diamonds$clarity))
+legend("topleft",legend=levels(diamonds$clarity),col=1:length(levels(diamonds$clarity)),pch=19)
+
+plot(diamonds$carat,diamonds$price,pch=19,col=as.numeric(diamonds$color))
+legend("topleft",legend=levels(diamonds$color),col=1:length(levels(diamonds$color)),pch=19)
+
+plot(diamonds$carat,diamonds$price,pch=19,col=as.numeric(diamonds$carat))
+legend("topleft",legend=unique(ceiling(diamonds$carat)),col=1:max(ceiling(diamonds$carat)),pch=19)
+
+fit <- lm(price~depth+table+carat+cut+color+clarity, data = diamonds)
+summary(fit)
+plot(fit, which = 1)
+plot(fit, which = 2)
+plot(fit, which = 3)
+# a few extreme values
+
+fit2 <- lm(log(price)~depth+table+carat+cut+color+clarity, data = diamonds)
+summary(fit2)
+plot(fit2, which = 1)
+plot(fit2, which = 2)
+plot(fit2, which = 3)
+# systematic non-linearity in the estimated residuals
+
+fit3 <- lm(log(price)~carat+I(carat^2)+cut+color+clarity, data = diamonds)
+summary(fit3)
+plot(fit3, which = 1)
+plot(fit3, which = 2)
+plot(fit3, which = 3)
+# eliminated the concerns of the non-linear curvature
