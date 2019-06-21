@@ -222,3 +222,38 @@ plot(fit3, which = 1)
 plot(fit3, which = 2)
 plot(fit3, which = 3)
 # eliminated the concerns of the non-linear curvature
+
+library("MASS")
+?survey
+summary(survey)
+pairs(survey)
+
+cor(survey$Wr.Hnd, survey$NW.Hnd, use = "complete.obs")
+
+wr <- lm(Height~Wr.Hnd, data = survey)
+summary(wr)
+plot(wr, which = 1)
+plot(wr, which = 2)
+plot(wr, which = 3)
+# 45, 190, and 14 are extreme values
+
+nw <- lm(Height~NW.Hnd, data = survey)
+summary(nw)
+plot(nw, which = 1)
+plot(nw, which = 2)
+plot(nw, which = 3)
+# 45, 190, and 14 are extreme values
+
+b <- lm(Height~Wr.Hnd+NW.Hnd, data = survey)
+summary(b)
+plot(b, which = 1)
+plot(b, which = 2)
+plot(b, which = 3)
+# 45, 190, and 14 are extreme values again, all is right in the world
+
+predict(wr, data.frame(Wr.Hnd = 18.1))
+# 170.3644
+predict(nw, data.frame(NW.Hnd = 18.1))
+# 170.716
+predict(b, data.frame(Wr.Hnd = 18.1, NW.Hnd = 18.1))
+# 170.3927
