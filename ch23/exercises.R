@@ -46,3 +46,61 @@ interactive.arrow(xpd = TRUE, label = "maximum")
 interactive.arrow(xpd = TRUE, label = "outliers")
 
 dev.off()
+
+# 23.2
+library(ggplot2)
+?diamonds
+summary(diamonds)
+
+dev.new(width = 6, height = 6)
+par(mar = c(0, 4, 2, 0))
+
+boxplot(diamonds$price~diamonds$clarity, axes=FALSE, frame=FALSE,
+        main = "Diamond Prices by Clarity")
+axis(2, at = seq(0, 18000, 2000), las = 1, tcl = 1, mgp = c(3, 0.5, 0))
+
+text(locator(1), "I1",   xpd = TRUE, cex = 1.5)
+text(locator(1), "SI2",  cex = 1.5)
+text(locator(1), "SI1",  cex = 1.5)
+text(locator(1), "VS2",  cex = 1.5)
+text(locator(1), "VS1",  cex = 1.5)
+text(locator(1), "VVS2", cex = 1.5)
+text(locator(1), "VVS1", cex = 1.5)
+text(locator(1), "IF",   cex = 1.5)
+
+dev.off()
+
+dev.new(width = 8, height = 7)
+par(mar = c(2, 5, 3, 5), oma = c(2, rep(1, 3)))
+
+plot(diamonds$price~diamonds$carat,
+     col = c("red", "green", "blue", "purple", "black")[as.numeric(diamonds$cut)],
+     axes = FALSE, ann = FALSE)
+box(bty = "u")
+
+axis(1, at = seq(0.0, 6.0, 0.25), font = 4, mgp = c(3, 0.5, 0))
+axis(1, at = seq(0.0, 6.0, 0.5), tcl = -0.25, labels = FALSE)
+
+axis(2, at = seq(1000, 19000, 2000), las = 1, font = 4)
+axis(4, at = seq(1000, 19000, 1000) * 1.37,
+     labels = seq(1000, 19000, 1000), las = 1, font = 4)
+
+fit <- lm(price~carat + I(carat^2), data=diamonds)
+s <- seq(min(diamonds$carat), max(diamonds$carat), length = 100)
+p <- predict(fit, newdata = data.frame(carat = s), interval = "prediction")
+lines(s, p[,1], col = "gray", lwd = 2)
+lines(s, p[,2], col = "gray", lty = 2)
+lines(s, p[,3], col = "gray", lty = 2)
+
+expr1 <- expression("USD$"%~~%1.37%*%"SGD$")
+expr2 <- expression(paste("Price"==beta[0]+beta[1],"Carat",+beta[2],"Carat"^2))
+
+mtext("CARAT",side=1,line=0,outer=TRUE)
+mtext("SGD$",side=2,line=4)
+mtext("Scatterplot of Diamond Price by Carat and Cut",side=3,line=2,cex=1.5)
+mtext(expr1,side=4,line=4)
+
+legend(locator(1), legend = levels(diamonds$cut),
+       col = c("red", "green", "blue", "purple", "black"), pch=1)
+
+dev.off()
