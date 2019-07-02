@@ -42,3 +42,38 @@ colorlegend(col = col1(50), zlim = range(Salaries$yrs.since.phd),
             zval = seq(10, 50, 10), main = "Years since\nPhD")
 
 # skip h - l
+
+# 25.2
+library(scatterplot3d)
+
+library(faraway)
+?diabetes
+summary(diabetes)
+pairs(diabetes)
+
+scatterplot3d(x = diabetes$weight, y = diabetes$hip, z = diabetes$waist,
+              highlight.3d = TRUE, pch = c(3, 4)[as.numeric(diabetes$gender)],
+              xlab = "Weight", ylab = "Hip", zlab = "Waist")
+legend("topleft", legend = levels(diabetes$gender), pch=3:4)
+
+?airquality
+summary(airquality)
+pairs(airquality)
+
+b <- na.omit(airquality)
+?b
+summary(b)
+pairs(b)
+
+ozcol <- topo.colors(50)
+colindex <- cut(b$Ozone, include.lowest = TRUE,
+                breaks = seq(min(b$Ozone), max(b$Ozone), length = 51))
+scatterplot3d(x = b$Wind, y = b$Solar.R, z = b$Temp,
+              type = "h", pch = b$Month - 4, color = ozcol[colindex],
+              main = "NY Air Quality",
+              xlab = "Wind (mph)", ylab = "Solar Radiation (lang)", zlab = "Temperature (F)")
+legend("bottomright", legend = c("May", "June", "July", "August", "September"),
+       pch = 1:5, title = "Month", xpd = TRUE)
+library("shape")
+colorlegend(ozcol, zlim = range(b$Ozone), main = "Ozone (ppb)",
+            zval = seq(0, 160, 40), posx = c(0.1, 0.13), posy = c(0.7, 0.9))
