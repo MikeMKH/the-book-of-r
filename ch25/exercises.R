@@ -77,3 +77,45 @@ legend("bottomright", legend = c("May", "June", "July", "August", "September"),
 library("shape")
 colorlegend(ozcol, zlim = range(b$Ozone), main = "Ozone (ppb)",
             zval = seq(0, 160, 40), posx = c(0.1, 0.13), posy = c(0.7, 0.9))
+
+# 25.3
+library(boot)
+?nuclear
+summary(nuclear)
+pairs(nuclear)
+
+a1 <- lm(cost~date+cap, data = nuclear)
+summary(a1)
+a2 <- lm(cost~date*cap, data = nuclear)
+summary(a2)
+
+capseq <- seq(min(nuclear$cap), max(nuclear$cap), length = 50)
+datseq <- seq(min(nuclear$date), max(nuclear$date), length = 50)
+b <- expand.grid(cap = capseq, date = datseq)
+p1 <- matrix(predict(a1, newdata = b), 50, 50)
+p2 <- matrix(predict(a2, newdata = b), 50, 50)
+
+par(mfrow = c(1, 2))
+contour(x = capseq, y = datseq, z = p1)
+contour(x = capseq, y = datseq, z = p2)
+# similar with a slight curvature appearing in the surface associated with the interactive model
+
+filled.contour(x = capseq, y = datseq, z = p1,
+               xlab = "Capacity", ylab = "Permit date",
+               color.palette = topo.colors,
+               plot.axes = {axis(1);axis(2);
+                 contour(capseq, datseq, p2,add = TRUE, lwd = 2, lty = 2)})
+
+?faithful
+summary(faithful)
+plot(x = faithful$waiting, y = faithful$eruptions)
+
+library("MASS")
+dens <- kde2d(x = faithful$waiting, y = faithful$eruptions, n = 100)
+contour(dens$x, dens$y, dens$z)
+
+cols <- colorRampPalette(c("darkblue", "hotpink"))
+filled.contour(dens$x, dens$y, dens$z, color.palette = cols,
+               xlab = "Waiting time", ylab = "Eruption duration",
+               plot.axes={axis(1);axis(2);points(faithful$waiting, faithful$eruption, cex = 0.5, col = "gray")})
+# skip h
