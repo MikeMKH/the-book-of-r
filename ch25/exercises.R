@@ -119,3 +119,39 @@ filled.contour(dens$x, dens$y, dens$z, color.palette = cols,
                xlab = "Waiting time", ylab = "Eruption duration",
                plot.axes={axis(1);axis(2);points(faithful$waiting, faithful$eruption, cex = 0.5, col = "gray")})
 # skip h
+
+# 25.4
+?airquality
+summary(airquality)
+pairs(airquality)
+
+air <- na.omit(airquality[,c(4, 3, 1)])
+air.fit <- lm(Temp~Wind*Ozone, data = air)
+summary(air.fit)
+
+n <- 50
+windseq <- seq(min(air$Wind), max(air$Wind), length = n)
+ozoneseq <- seq(min(air$Ozone), max(air$Ozone), length = n)
+grid <- expand.grid(Wind = windseq, Ozone = ozoneseq)
+air.pred <- matrix(predict(air.fit, newdata = grid), n, n)
+
+normalize <- function(datavec){
+  lo <- min(datavec, na.rm = TRUE)
+  up <- max(datavec, na.rm = TRUE)
+  datanorm <- (datavec - lo) / (up - lo)
+  return(datanorm)
+}
+
+library("shape")
+par(mar = c(5, 4, 4, 6))
+image(x = windseq, y = ozoneseq, z = air.pred,
+      col = topo.colors(20), xlab = "Wind (mph)", ylab = "Ozone (ppb)")
+points(air$Wind, air$Ozone, col = gray(normalize(air$Temp)), pch = 19)
+colorlegend(col = topo.colors(20),
+            zlim = range(air.pred), zval=seq(60, 140, 10),
+            posx = c(0.88, 0.91), main = "Pred. temp")
+colorlegend(col = gray.colors(10, start = 0, end = 1),
+            zlim = range(air$Temp), zval = seq(60, 95, 5),
+            posx = c(0.67, 0.7), posy = c(0.4, 0.8), main = "Obs. temp")
+
+# skip d - f
