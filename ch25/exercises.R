@@ -155,3 +155,57 @@ colorlegend(col = gray.colors(10, start = 0, end = 1),
             posx = c(0.67, 0.7), posy = c(0.4, 0.8), main = "Obs. temp")
 
 # skip d - f
+
+# 25.5
+library(boot)
+?nuclear
+summary(nuclear)
+pairs(nuclear)
+
+fit1 <- lm(cost~date+cap, data = nuclear)
+fit2 <- lm(cost~date*cap, data = nuclear)
+summary(fit1)
+summary(fit2)
+
+dateseq <- seq(min(nuclear$date), max(nuclear$date), length = 50)
+capseq <- seq(min(nuclear$cap), max(nuclear$cap), length = 50)
+grid <- expand.grid(date = dateseq, cap = capseq)
+
+pred1 <- matrix(predict(fit1, newdata = grid), 50, 50)
+pred2 <- matrix(predict(fit2, newdata = grid), 50, 50)
+
+par(mfrow = c(2, 1), mar = rep(1, 4))
+persp(x = capseq, y = dateseq, z = pred1,
+      theta = 25, zlim = range(c(pred1, pred2)),
+      ticktype = "detailed",
+      xlab = "Capacity (MWe)",
+      ylab = "Permit issue date",
+      zlab = "Predicted cost")
+persp(x = capseq, y = dateseq, z = pred2,
+      theta = 25, zlim = range(c(pred1, pred2)),
+      ticktype = "detailed",
+      xlab = "Capacity (MWe)",
+      ylab = "Permit issue date",
+      zlab = "Predicted cost")
+
+par(mfrow=c(1,1),mar=rep(1,4))
+persp(x = capseq, y = dateseq, z = pred2 - pred1,
+      theta = 75, ticktype = "detailed")
+# something happen around the time of 1970 and 1971
+
+x <- nrow(volcano)
+y <- ncol(volcano)
+persp(x = 1:x, y = 1:y, z = volcano)
+
+par(mar = c(1, 1, 1, 5))
+m <- (volcano[-1, -1] + volcano[-1, -y] + volcano[-x, -1] + volcano[-x, -y]) / 4
+cols <- terrain.colors(50)
+col <- cols[cut(m, breaks = seq(min(volcano), max(volcano), length=51), include.lowest = TRUE)]
+persp(1:x, 1:y, volcano, col=col, border = NA, theta = -30, phi = 15,
+      scale = FALSE, expand = 0.1, axes = FALSE)
+library("shape")
+colorlegend(cols, zlim = range(volcano), zval = seq(100, 180, 20),
+            posx = c(0.83, 0.86), posy = c(0.4, 0.7),
+            main = "Elevation (m)")
+
+# skip e - f
