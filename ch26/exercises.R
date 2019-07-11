@@ -26,3 +26,25 @@ legend3d("topleft", pch = 19, pt.cex = c(0.8, 0.8, 1.5, 1.5),
          legend = c("Male LH", "Female RH", "Male LH", "Female LH"))
 
 # skip c
+
+# 26.2
+?airquality
+aq <- na.omit(airquality[,c("Temp", "Wind", "Ozone", "Month")])
+summary(aq)
+pairs(aq)
+
+fit <- lm(Temp~Wind*Ozone, data = aq)
+summary(fit)
+
+n <- 50
+windseq <- seq(min(aq$Wind), max(aq$Wind), length = n)
+ozoneseq <- seq(min(aq$Ozone), max(aq$Ozone), length = n)
+grid <- expand.grid(Wind = windseq, Ozone = ozoneseq)
+predict <- predict(fit, newdata = grid,
+                   interval = "confidence", level = 0.95)
+m <- matrix(predict[,1], n, n)
+
+library(rgl)
+persp3d(x = windseq, y = ozoneseq, z = m, color = "yellow")
+
+# skip b - e
