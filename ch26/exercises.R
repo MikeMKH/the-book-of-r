@@ -48,3 +48,63 @@ library(rgl)
 persp3d(x = windseq, y = ozoneseq, z = m, color = "yellow")
 
 # skip b - e
+
+# 26.3
+library(mvtnorm)
+library(rgl)
+library(misc3d)
+library(ks)
+covmat <- matrix(c(1,0.8,0.4,0.8,1,0.6,0.4,0.6,1),3,3)
+a <- rmvnorm(1000, mean = c(0, 0, 0), sigma = covmat)
+
+plot3d(a, xlab = "x", ylab = "y", zlab = "z")
+
+s <- seq(-3, 3, length = 50)
+grid <- expand.grid(s, s, s)
+f <- array(
+  dmvnorm(grid, mean = c(0, 0, 0), sigma = covmat),
+  c(50, 50, 50)
+)
+b <- dmvnorm(c(0, 0, 0), mean = c(0, 0, 0), sigma = covmat)
+contour3d(x = s, y = s, z = s, f = f, level = c(0.1, 0.5, 0.9) * norm,
+          color = c("yellow", "seagreen4", "navyblue"),
+          alpha = c(0.2, 0.4, 0.6), add = TRUE)
+
+c <- kde(a, compute.cont = TRUE)
+plot3d(a, xlab = "x", ylab = "y", zlab = "z")
+
+contour3d(x = s, y = s, z = s, f = f, level = 0.5 * b,
+          color = "seagreen4", alpha = 0.4, add = TRUE)
+contour3d(x = c$eval.points[[1]],
+          y = c$eval.points[[2]],
+          z = c$eval.points[[3]],
+          f = c$estimate,
+          level = c$cont[50],
+          color = "red", alpha = 0.2, add = TRUE)
+
+# skip d -f
+res <- 200
+theta <- seq(0, 2 * pi, length = res)
+alpha <- 1
+beta <- 2
+
+xm <- outer(theta, theta,
+            function(t1, t2) (beta + alpha * cos(t2)) * cos(t1))
+ym <- outer(theta, theta,
+            function(t1, t2) (beta + alpha * cos(t2))* sin(t1))
+zm <- outer(theta, theta,
+            function(t1, t2) alpha * sin(t2))
+doughnut <- rep("tan", res^2)
+
+plot3d(x = xm, y = ym, z = zm)
+persp3d(x = xm, y = ym, z = zm,
+        col = "seagreen4", axes = FALSE, xlab = "", ylab = "", zlab = "")
+
+doughnut[as.vector(zm) > 0] <- "pink"
+sample(1:10, 4)
+
+sprinkles <- c("blue", "green", "red", "violet", "yellow")
+doughnut[sample(which(as.vector(zm) > 0), 300)] <- sprinkles
+
+persp3d(xm, ym, zm, col = doughnut, aspect = c(1, 1, 0.4),
+        axes = FALSE, xlab = "", ylab = "", zlab = "")
